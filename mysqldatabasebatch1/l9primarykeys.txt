@@ -1,0 +1,92 @@
+ ==>PRIMARY KEY Constraint(PK)
+
+
+
+PK Unique identifier
+the PKconstraint unique each record in table.
+PK value must unique,cannot contain NULL values,
+PK single or multi colums(fields).
+
+PRIMARY KEY = Syntax
+Method 1
+CREATE TABLE persons(
+id INT NOT NULL,
+firstname VARCHAR(255) NOT NULL,
+lastname VARCHAR(255),
+age int,
+PRIMARY KEY (id)
+);
+
+
+Method 2
+CREATE TABLE persons(
+id INT NOT NULL PRIMARY KEY,
+firstname VARCHAR(255) NOT NULL,
+lastname VARCHAR(255),
+age INT
+
+);
+
+_______________________________________________
+CREATE TABLE computers(
+brand varchar(255),
+made varchar(255)
+
+);
+
+INSERT INTO computers(brand,made)
+VALUE('asus','china');
+
+INSERT INTO computers(brand,made)
+VALUE('asus',china);
+
+
+===>CREATE TABLE with PK by brand
+CREATE TABLE computers(
+brand VARCHAR(255) NOT NULL,
+made VARCHAR(255),
+PRIMARY KEY(brand)
+);
+
+INSERT INTO computers(brand,made)
+VALUE('asus','china');
+
+INSERT INTO computers(brand,made)
+VALUE ('hp','thai');
+
+(error*)
+INSERT INTO computers(brand,made)
+VALUE ('asus','india');
+
+DROP TABLE computers;
+
+CREATE TABLE computers(
+id INT NOT NULL PRIMARY KEY,
+brand VARCHAR(255),
+made VARCHAR(255)
+);
+
+(error*)
+INSERT INTO computers(brand,made)
+VALUE('asus','china')
+
+DROP TABLE computers;
+___________________________________________
+CREATE TABLE with pk BY id using AUTO-INCREMENT
+
+CREATE TABLE computers(
+id INT NOT NULL AUTO_INCREMENT,
+brand VARCHAR(255),
+made VARCHAR(255),
+PRIMARY KEY(id)
+);
+
+INSERT INTO computers(brand,made)
+VALUE('asus','china');
+
+
+INSERT INTO computers(id,brand,made)
+VALUE(3,'hp','china');
+
+INSERT INTO computers(brand,made)
+VALUE('dell','indo');

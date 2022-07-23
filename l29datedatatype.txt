@@ -1,0 +1,559 @@
+*Date Data Types (5 types)
+Data Type                 Description
+1.DATE                     A date. Format YYY-MM-DD. supported 1000-01-01 to 9999-12-31
+fractional seconds support 
+2.DATETIME (fsp)            Date and time combination.Format YYY-MM-DD hh::mm::ss.supported 1000-01-01
+00:00:00 to 9999-12-31  23:59:59
+3.TIMESTAMP(fsp)            Automtic initialization. ('1970-01-01 00:00:00') YYYY-MM-DD- hh::mm::ss
+4.TIME(fsp)                 A time. Format hh:mm:ss /hh:mm:ss:fff.supported range -838:59:59 to 838:59:59    
+5.YEAR                      A year.Format YYYY . supported range 1901 to 2155
+
+
+____________________________________________________________________
+
+Eg. gives current date(2021-12-18)
+SELECT CURDATE();
+SELECT CURRENT_DATE();
+
+Eg. gives current time (09.54.49)
+SELECT CURTIME();
+SELECT CURRENT_TIME();
+
+Eg.get current datetime(2021-12-18  09:58:05)
+Method 1
+SELECT NOW();
+Method 2
+SELET CURRENT_TIMESTAMP;
+
+
+Eg. get the last date of this month by full date (2021-12-31)
+SELECT LAST_DAY(NOW());
+SELECT LAST_DAY(CURDATE());
+SELECT LAST_DAY(CURRENT_DATE());
+SELECT LAST_DAY(CURRENT_TIMESTAMP());
+
+Eg. get last day of this month by day(31)
+SELECT DAY(LAST_DAY(NOW()));
+SELECT DAY(LAST_DAY(CURDATE()));
+SELECT DAY(LAST_DAY(CURRENT_DATE()));
+SELECT DAY(LAST_DAY(CURRENT_TIMESTAMP()));
+
+
+*result = 30
+SELECT DAY(LAST_DAY(NOW())-1);
+*result = 29
+SELECT DAY(LAST_DAY(NOW())-2);
+
+
+Eg.get the last date of the previos month
+
+*result = 2021-11-30
+SELECT LAST_DAY(NOW() - INTERVAL 1 MONTH);
+*result = 2021-10-31
+SELECT LAST_DAY(NOW() - INTERVAL 2 MONTH);
+*result = 2021-9-30
+SELECT LAST_DAY(NOW() - INTERVAL 3 MONTH);
+SELECT LAST_DAY(CURDATE() - INTERVAL 1 MONTH);
+SELECT LAST_DAY(CURRENT_DATE() - INTERVAL 1 MONTH);
+SELECT LAST_DAY(CURDATE_TIMESTAMP() - INTERVAL 1 MONTH);
+
+Eg.get the last date of the previous month by day
+*result = 30
+SELECT DAY(LAST_DAY(NOW() - INTERVAL 1 MONTH));
+
+Eg.get the last date of the next month 
+SELECT LAST_DAY(NOW() + INTERVAL 1 MONTH);
+SELECT LAST_DAY(NOW()) + INTERVAL 2 MONTH);
+SELECT LAST_DAY(NOW()) + INTERVAL 3 MONTH);
+SELECT LAST_DAY(CURDATE() + INTERVAL 1 MONTH);
+SELECT LAST_DAY(CURRENT_DATE() + INTERVAL 1 MONTH);
+SELECT LAST_DAY(CURDATE_TIMESTAMP() + INTERVAL 1 MONTH);
+
+Eg.get the last date of the next month by day
+*result = 31
+SELECT DAY(LAST_DAY(NOW() + INTERVAL 1 MONTH));
+
+
+Eg.get the first date of the previous month DATE_FORMAT(,);
+SELECT DATE_FORMAT(NOW() - INTERVAL 1 MONTH,'%Y-%M-01');
+SELECT DATE_FORMAT(CURDATE() - INTERVAL 1 MONTH, '%Y-%M-01');
+SELECT DATE_FORMAT(CURRENT_DATE() - INTERVAL 1 MONTH,'%Y-%M-01');
+
+*result 2021-October-15  
+SELECT DATE_FORMAT(NOW() - INTERVAL 2 MONTH,'%Y-%M-15');
+
+*result  21-10-15    
+SELECT DATE_FORMAT(NOW() - INTERVAL 2 MONTH,'%y-%m-15');
+
+
+*Get the first date of the next month
+*result 2022-January-01    
+SELECT DATE_FORMAT(NOW() + INTERVAL 1 MONTH,'%Y-%M-01');
+SELECT DATE_FORMAT(CURDATE() + INTERVAL 1 MONTH, '%Y-%M-01');
+SELECT DATE_FORMAT(CURRENT_DATE() + INTERVAL 1 MONTH,'%Y-%M-01');
+
+
+*Get the same date of the previous month 
+*result = 2021-11-18th
+SELECT DATE_FORMAT(NOW() - INTERVAL 1 MONTH,'%Y-%M-%D');
+*result = 2021-11-18
+SELECT DATE_FORMAT(NOW() - INTERVAL 1 MONTH,'%Y-%M-%d');
+
+*result | 18-January-2022   
+SELECT DATE_FORMAT(NOW() + INTERVAL 1 MONTH,'%d-%M-%Y');
+
+*Gete the first date of this month
+*result  2021-December-01  
+SELECT DATE_FORMAT(NOW(),'%Y-%M-01');
+
+______________________________________________________________
+=>Exercise
+
+CREATE TABLE students(
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100),
+    birthdate DATE,
+    birthtime TIME,
+    year YEAR,
+    city VARCHAR(100),
+    PRIMARY KEY(id);
+):
+
+DESC students;
+
+INSERT INTO students(name,birthdate,birthtime,year,city);
+VALUES ("aung aung","2000-02-20","10:12:59","2000","mawlamyine"),
+("thar gyi","2002-03-15","11:12:59","2002","mawlamyine"),
+("kyaw kyaw","2008-04-10","12:10:59","2008","bago"),
+("zaw zaw","2003-04-26","18:25:00","2003","mandalay"),
+("mya mya","1999-02-16","11:16:12","1999","yangon"),
+
+SELECT * FROM students;
+
+SELECT name,birthdate,DAY(birthdate) FROM students;
+
+SELECT name,birthdate,DAYNAME(birthdate) FROM students;
+
+1=sun, 2=mon, 3=tue,  4=wed,  5=thur,  6=fri,   7=sat
+SELECT name,birthdate,DAYOFWEEK(birthdate) FROM students;
+
+SELECT name,birthdate,DAYOFYEAR(birthdate) FROM students;
+
+SELECT name,birthdate,MONTH(birthdate) FROM students;
+
+SELECT name,birthdate,MONTHOFNAME(birthdate) FROM students;
+
+SELECT name,birthdate,YEAR(birthdate) FROM students;
+
+
+SELECT name,birthtime,HOUR(birthtime) FROM students;
+
+SELECT name,birthtime,MINUTE(birthtime) FROM students;
+
+SELECT name,birthtime,SECOND(birthtime) FROM students;
+
+2021-June-21
+SELECT CONCAT(YEAR(birthdate),'-',MONTHNAME(birthdate),'-',DAY(birthdate)) AS 'full date' FROM students;
+
+June 21 2021
+SELECT CONCAT(MONTHNAME(birthdate),' ',DAY(birthdate),' ',YEAR(birthdate))AS 'full date' FROM students;
+
+==>BETWEEN with AND
+
+SELECT * FROM students;
+
+SELECT name,birthdate FROM students
+WHERE birthdate BETWEEN "2000-01-01" AND "2002-12-16";
+
+**error
+SELECT name,birthdae FROM students
+WHERE birthdate BETWEEN '2000' AND '2002';
+
+
+**error
+SELECT name,birthdae FROM students
+WHERE birthdate BETWEEN 2000 AND 2002;
+
+
+OK
+SELECT name,birthdate FROM students
+WHERE year BETWEEN '2000' AND '2002';
+
+
+OK
+SELECT name,birthdate FROM students
+WHERE year BETWEEN 2000 AND 2002;
+
+SELECT name,birthdate FROM students
+WHERE YEAR(birthdate) BETWEEN 2000 AND 2002;
+
+ SELECT name,birthdate FROM students
+  WHERE MONTH(birthdate) <= 4;
+
+SELECT name,birthdate FROM students
+ WHERE MONTH(birthdate) BETWEEN 1 AND 4;
+
+
+==>BETWEEN with IN
+SELECT name,birthdate,city FROM students
+WHERE YEAR(birthdate) BETWEEN 2000 AND 2002 AND city IN("mawlamyine","bago");
+
+______________________________________________________________________________
+
+
+=>Exercise DATE_ADD()/ ADDDATE()
+
+SELECT * FROM students;
+
+SELECT name,birthdate,DATE_ADD(birthdate,INTERVAL 1 MONTH )FROM students;
+
+
+SELECT name,birthdate,DATE_ADD(birthdate,INTERVAL -1 MONTH )FROM students;
+
+
+SELECT name,birthdate,(birthdate + INTERVAL 1 MONTH) FROM students;  
+
+
+SELECT name,birthdate,(birthdate - INTERVAL 1 MONTH) FROM students;  
+
+SELECT name,birthdate,(birthdate + INTERVAL 30 DAYS) FROM students; 
+
+1 QUARTER = 3 MONRHS
+SELECT name,birthdate,(birthdate - INTERVAL 1 QUARTER) FROM students; 
+SELECT name,birthdate,(birthdate - INTERVAL 2 QUARTER) FROM students; 
+SELECT name,birthdate,(birthdate - INTERVAL 3 QUARTER) FROM students; 
+SELECT name,birthdate,(birthdate - INTERVAL 4 QUARTER) FROM students; 
+
+SELECT name,birthdate,DATE_ADD(birthdate , INTERVAL 1 QUARTER ) FROM students;
+
+SELECT name,birthtime,DATE_ADD(birthdate , INTERVAL 20 SECOND) FROM students;
+
+
+SELECT name,birthdate,birthtime,(birthdate + INTERVAL 1 MONTH + INTERVAL 10 HOUR) FROM students;
+
+
+SELECT name,CONCAT(birthdate," ",birthtime)AS "datetime",(birthdate + INTERVAL 1 MONTH+ INTERVAL 10 HOUR + INTERVAL 20 MINUTE + INTERVAL 59 SECOND)AS "datetime"
+FROM students;
+
+
+__________________________________________________________________________________________________
+==>Exercise TIMESTAMP
+
+CREATE TABLE comments(
+    content VARCHAR(100),
+    created_at TIMESTAMP DEFAULT NOW();
+);
+
+DESC comments;
+
+INSERT INTO commetns(content)
+VALUES ("this is so funny"),
+("how sweet"),
+("how wonderful"),
+("preety good");
+
+SELECT * FROM comments;
+
+
+INSERT INTO commetns(content)
+VALUES ("hello how are you"),
+("so nice"),
+("so sweet"),
+("it is amazing");
+
+INSERT INTO commetns(content)
+VALUES ("why so cute"),
+
+SELECT * FROM comments;
+
+SELECT * FROM commments ORDER BY created_at DESC;
+
+*edit comments
+UPDATE comments SET content ="bleh..bleh...bleh..."WHERE content ="how sweet";
+SELECT * FROM comments ORDER BY created_at DESC;
+
+
+CREATE TABLE feedbacks(
+    content VARCHAR(100),
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFALULT NOW() ON UPDATE CURRENT_TIMESTAMP
+);
+
+DESC feedbacks;
+
+
+INSERT INTO feedbacks(content)
+VALUES ("hello how are you"),
+("so nice"),
+("so sweet"),
+("it is amazing");
+
+SELECT * FROM feedbacks;
+
+UPDATE feedbackks SET content = "mur mur..mur..mur.."WHERE content ="how sweet";
+
+SELECT *FROM feedbackks ORDER BY created_at DESC;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+_____________________________________________________________________________________________________
+
+This paragraph is from L11
+
+==> <> /!=
+
+SELECT * FROM persons;
+
+SELECT personid,firstname,city
+FROM persons
+WHERE city <> 'mandalay';
+
+SELECT personid,firstname,city
+FROM persons
+WHERE city != 'mandalay';
+
+SELECT personid,firstname,city
+FROM persons
+WHERE NOT city = 'mandalay';
+
+
+*error
+SELECT personid,firstname,city
+FROM persons
+WHERE NOT city 'mandalay';
+
+
+*error
+SELECT personid,firstname,city
+FROM persons
+WHERE city NOT =  'mandalay';
+
+
+*error
+SELECT personid,firstname,city
+FROM persons
+WHERE city LIKE 'mandalay';
+
+
+
+SELECT personid,firstname,city
+FROM persons
+WHERE city NOT LIKE 'mandalay';
+
+SELECT personid,firstname,city
+FROM persons
+WHERE city  LIKE 'man%';
+
+
+SELECT personid,firstname,city
+FROM persons
+WHERE city NOT LIKE 'man%';
+
+_____________________________
+
+This paragraph also l11
+
+==> MODULE + - * / %
+
+SELECT * FROM employees;
+
+
+SELECT employeeid,name,age,salary,city FROM employees
+WHERE age % 2 != 0;
+
+
+SELECT employeeid,name,age,salary,city FROM employees
+WHERE age % 2 NOT LIKE 0;
+
+SELECT employeeid,name,age,salary,city FROM employees 
+WHERE age + 1 =18;
+
+SELECT employeeid,name,age,salary,city FROM employees
+WHERE age -1 < 18;
+
+SELECT employeeid,name,age,salary,city FROM employees 
+WHERE salary * 2 < 300000;
+
+________________________________________
+
+This paragraph also l11
+
+==>BETWEEN with AND
+
+SELECT * FROM employees;
+
+
+SELECT employeeid,name,age,salary,city FROM employees 
+WHERE salary BETWEEN 200000 AND 300000;
+
+
+SELECT employeeid,name,age,salary,city FROM employees 
+WHERE salary BETWEEN 200000 AND 300000 AND city = "chin";
+
+SELECT employeeid,name,age,salary,city FROM employees 
+WHERE  city ="chin" AND salary BETWEEN 200000 AND 300000;
+
+* NOT BETWEEN AND
+
+SELECT employeeid,name,age,salary,city FROM employees 
+WHERE salary NOT BETWEEN 200000 AND 300000;
+
+_____________________________________
+
+==>IN
+
+SELECT * FROM employees;
+
+SELECT employeeid,name,salary,city FROM employees
+WHERE NAME = "aung aung";
+
+SELECT employeeid,name,salary,city FROM employees
+WHERE NAME="aung aung" AND city ="mandalay";
+
+SELECT employeeid,name,salary,city FROM employees
+WHERE name="aung aung" OR name ="thar yi " OR name = "aye aung";
+
+
+***wrong
+SELECT employeeid,name,salary,city FROM employees
+WHERE name="aung aung" AND name ="thar yi " AND name = "aye aung";
+
+
+SELECT employeeid,name,salary,city FROM employees 
+WHERE salary = 100000 OR salary = 200000 OR salary = 300000;
+
+
+==>IN
+
+SELECT employeeid,name,salary,city FROM employees 
+WHERE salary IN  (100000,200000,300000);
+
+
+==>NOT IN
+
+SELECT employeeid,name,salary,city FROM employees 
+WHERE salary NOT IN  (100000,200000,300000);
+
+____________________________________________________________________________________________
+
+
+
+This paragraph is from  L4
+
+==>Table infrom
+DESC persons;
+DESCRIBE persons;
+SHOW COLUMNS FROM persons;
+
+
+*Check table from current db to another db
+
+SHOW COLUMNS FROM wdf6378.persons;
+
+SHOW COLUMNS FROM feedbacks IN wdf6330; 
+
+
+__________________________________________
+
+This paragraph also L4
+
+Method 1 = Single DROP
+DROP TABLE tablename;
+
+Method 2 = Multi DROP
+DROP TABLE tablename1,tablename,tablename3,....;
+
+__________________________________________
+
+This paragraph also L4
+
+==>Exercise
+
+CREATE TABLE abc(
+name VARCAHR(10)
+);
+
+
+
+CREATE TABLE IF NOT EXISTS abc(
+name VARCAHR(10)
+);
+
+DROP TABLE IF EXISTS abc;
+
+**Multi delete table
+DROP TABLE IF EXISTS kotha.monitors;
+DROP TABLE IF EXISTS abc,efg;
+
+==>TRUNCATE
+
+CREATE TABLE IF NOT EXISTS monitors(
+   id INT NOT NULL AUTO_INCREMENT,
+   brand VARCHAR(100),
+   price DECIMAL(8,2)
+   PRIMARY KEY(id)
+);
+
+DESC monitors;
+SHOW TABLES;
+
+INSERT INTO monitors(brand,price)
+VALUES('asus',500000),
+('acer',600000),
+('aoc',700000),
+('dell',800000);
+
+SELECT * FROM monitors;
+
+DROP FROM monitors; //**delet everything both table and data
+ 
+DELETE FROM monitors; //**delet just data and start at you deleted eg..5,6,7.....
+
+TRUNCATE TABLE monitors; //**delet just data and start at 1.(like restart)
+
+_____________________________________________
+
+This paragraph also L4
+
+==>RENAME TABLE
+
+=>Syntax
+ALTER TABLE oldtablename
+RENAME to newtablename;
+
+CREATE TABLE IF NOT EXISTS stocks(
+item VARCHAR(100),
+stock INT
+);
+
+DESC stocks;
+
+INSERT INTO stocks(item,stock)
+VALUES('desktop',20),
+('laptop',10),
+('projector',5);
+
+SELECT * FROM stocks;
+
+SHOW TABLES;
+
+**//Change Table Name
+ALTER TABLE stocks 
+RENAME TO itaccessories;
+
+SHOW TABLES;
+
+SELECT * FROM itaccessories;
+
+____________________________________________________________________________

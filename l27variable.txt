@@ -1,0 +1,25 @@
+=>Local Variable
+
+DELIMITER //
+
+   CREATE PROCEDURE procname_proc()
+   BEGIN
+
+   DECLARE x INT;
+   DECLARE y INT;
+   DECLARE z INT;
+
+   SET x := 100;
+   SET y := 200;
+   SET z := x + y;
+
+   SELECT x,y,z;
+
+   END; //
+
+
+DELIMITER ;
+
+    CALL procname_proc();
+
+    SHOW PROCEDURE STATUS WHERE DB = "wdf6378";

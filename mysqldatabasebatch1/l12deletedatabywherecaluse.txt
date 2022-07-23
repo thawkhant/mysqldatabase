@@ -1,0 +1,39 @@
+==>DELETE RECORD
+
+Delete Syntax
+DELETE FROM tablename WHERE condition;
+
+Eg Syntax
+*may be in single
+DELETE FROM customer WHERE id="xxx";
+
+*will be multi records
+DELETE FROM customer WHERE customername = "aung aung";
+
+
+DELETE ALL Records
+DELETE FROM tablename
+______________________________________________________________
+
+SELECT * FROM stus;
+DELETE FROM stus WHERE name ="kyaw kyaw"; ***(0row effected)
+
+DELETE FORM stus WHERE name ="aung aung";(1row effected)
+
+DELETE FORM stus WHERE name = "su su";(1 row effected)
+
+
+CREATE TABLE stuts(
+name varchar(255),
+age VARCHAR(255)
+)
+INSERT INTO stus(name,age)
+VALUE ('aung aung',18),
+('su su',19)
+('hla hla',20)
+('nu nu',21)
+('kyaw kyaw',18)
+
+DELETE FROM stus WHERE age ="18"
+
+DELETE FROM stus;

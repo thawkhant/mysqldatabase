@@ -1,0 +1,36 @@
+==>Aliases (Easier to red results)
+
+Aliases Syntax
+
+
+SELECT columnname AS aliasname
+FROM tablename;
+______________________________________________________
+
+EXERCISE
+
+SELECT * FROM employees;
+
+SELECT name AS fullname 
+FROM employees;
+
+SELECT employeeid AS id 
+FROM employees;
+
+
+SELECT employeeid AS id 
+name,FROM employees;
+
+SELECT employeeid AS id ,
+name AS fullname,age,salary,FROM employees;
+
+SELECT employeeid AS id ,
+name AS fullname,age,salary AS payamount,FROM employees;
+
+SELECT employeeid AS id,name AS 'full name',age,salaary AS 'Pay Amount' FROM employees;
+
+SELECT 
+       employeeid AS id,
+       name AS fullname,
+       salary AS payamount,
+FROM employees;

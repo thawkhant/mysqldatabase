@@ -1,0 +1,378 @@
+=>Drop Column in table
+
+=Syntax : (Single)
+
+ALTER TABLE tablename
+DROP COLUMN columnname;
+
+=Syntax : (Multi)
+
+ALTER TABLE tablename
+DROP COLUMN columnnaame1,
+DROP COLUMN columnname2,
+.....;
+
+SELECT * FROM itaccessories;
+=> Add New Columns to table
+
+=Syntax : (Single)
+
+ALTER TABLE tablename
+ADD COLUMN columnname datatype;
+
+ALTER TABLE tablename
+ADD COLUMN columnname datatype FIRST;
+
+ALTER TABLE tablename
+ADD COLUMN columnname datatype AFTER existingcolumn;
+
+=Syntax ; (Multi)
+
+ALTER TABLE tablename
+ADD COLUMN columnname1 datatype FIRST|AFTER existingcolumn,
+ADD COLUMN columnname2 datatype FIRST|AFTER existingcolumn;
+
+
+=Exercise (Single)
+
+SELECT * FROM itaccessories;
+
+ALTER TABLE itaccessories
+ADD COLUMN brand VARCHAR(50);
+
+ALTER TABLE itaccessories
+ADD COLUMN unitprice DECIMAL(10,2) NOT NULL FIRST ;
+
+SELECT * FROM itaccessories;
+
+ALTER TABLE itaccessories
+ADD COLUMN madeby VARCHAR(50) NOT NULL AFTER items;
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+
+-------------------
+
+=Exercise (Multi)
+
+ALTER TABLE itaccessories 
+ADD COLUMN status INT DEFAULT 1 AFTER brand,
+ADD COLUMN createdby INT NOT NULL AFTER status;
+
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+
+INSERT INTO itaccessories(unitprice,items,madeby,stock,brand,createdby)
+VALUES(10,'keyboard','china',30,'a4tech',1),
+(20,'mouse','taiwan',50,'logitech',2);
+
+SELECT * FROM itaccessories;
+
+____________________________________________________________
+
+=>RENAME Column in table
+
+=Syntax
+
+ALTER TABLE tablename
+CHANGE COLUMN oldcolumnname newcolumnname datatype;
+
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+
+ALTER TABLE itaccessories
+CHANGE COLUMN stock totalqty INT;
+
+
+ALTER TABLE itaccessories
+CHANGE COLUMN brand manufactureby VARCHAR(100);
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+
+
+_____________________________________________________________
+
+=>MODIFY Column in the table ( Change column datatype )
+
+=Syntax ; ( Single )
+
+ALTER TABLE tablename
+MODIFY columnname datatype;
+
+=Syntax ; ( Multi )
+
+ALTER TABLE tablename
+MODIFY columnname datatype,
+MODIFY columnname datatype;
+
+=Exercise ( Single )
+
+DESC itaccessories;
+
+ALTER TABLE itaccessories
+MODIFY manufactureby VARCHAR(50);
+
+DESC itaccessories;
+
+*** error = cuz of NULL already in data table
+ALTER TABLE itaccessories
+MODIFY manufactureby VARCHAR(30) NOT NULL;
+
+ALTER TABLE itaccessories
+MODIFY items VARCHAR(50) NOT NULL;
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+
+-------------------
+
+=Exercise ( Multi )
+
+ALTER TABLE itaccessories
+MODIFY items VARCHAR(30) NOT NULL,
+MODIFY madeby VARCHAR(30) NOT NULL;
+
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+
+-------------------
+
+=Move Column
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+
+ALTER TABLE itaccessories
+MODIFY unitprice VARCHAR(50) NOT NULL
+AFTER madeby;
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+
+____________________________________________________________________
+
+=>Drop Column in table
+
+=Syntax : ( Single )
+
+ALTER TABLE tablename
+DROP COLUMN columnname;
+
+=Syntax : ( Multi )
+
+ALTER TABLE tablename
+DROP COLUMN columnname1,
+DROP COLUMN columnname2;
+
+
+=Exercise
+
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+
+ALTER TABLE itaccessories
+DROP COLUMN status;
+
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+
+
+ALTER TABLE itaccessories
+DROP COLUMN manufactureby,
+DROP COLUMN createdby;
+
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+
+______________________________________________________________
+
+=>Add PRIMARY Key
+
+=>Method 1
+
+ALTER TABLE itaccessories
+ADD COLUMN id INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+
+SHOW INDEX FORM itaccessories;
+
+ALTER TABLE itaccessories
+DROP COLUMN id;
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+
+
+=Method 2
+
+ALTER TABLE itaccessories
+ADD COLUMN id INT NOT NULL AUTO_INCREMENT FIRST,
+ADD PRIMARY KEY(id);
+
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+
+SHOW INDEX FORM itaccessories;
+
+____________________________________________________________
+
+=>DROP PRIMARY KEY
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+
+**error
+ALTER TABLE itaccessories DROP PRIMARY KEY;
+
+ALTER TABLE itaccessories MODIFY id INT NOT NULL;
+ALTER TABLE itaccessories DROP PRIMARY KEY;
+
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+SHOW INDEX FORM itaccessories;
+
+____________________________________________________________
+
+=>Add FOREING Key
+
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+SHOW INDEX FORM itaccessories;
+
+ALTER TABLE itaccessories
+ADD COLUMN customer_id INT NOT NULL;
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+SHOW INDEX FROM itaccessories;
+
+**error
+ALTER TABLE itaccessories
+ADD FOREIGN KEY(customer_id) REFERENCES customers(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+UPDATE itaccessories SET customer_id = 2 WHERE customer_id = 0;
+
+ALTER TABLE itaccessories
+ADD FOREIGN KEY(customer_id) REFERENCES customers(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+SHOW INDEX FROM itaccessories;
+
+
+____________________________________________________________
+
+=>DROP FOREIGN KEY
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+SHOW INDEX FROM itaccessories;
+
+**error
+ALTER TABLE itaccessories DROP FOREIGN KEY customer_id;
+
+SHOW CREATE TABLE itaccessories;
+ALTER TABLE itaccessories DROP FOREIGN KEY itaccessories_ibfk_1;
+ALTER TABLE itaccessories DROP KEY customer_id;
+
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+SHOW INDEX FROM itaccessories;
+
+
+________________________________________________________________________
+
+=>Add UNIQUE Key
+
+SELECT * FROM itaccessories;
+DESC itaccessories;
+SHOW INDEX FROM itaccessories;
+
+=Method 1
+ALTER TABLE itaccessories ADD UNIQUE(items);
+DESC itaccessories;
+SHOW INDEX FROM itaccessories;
+
+
+**error  //data must unique before you take unique key
+ALTER TABLE itaccessories ADD UNIQUE(totalqty);
+DESC itaccessories;
+SHOW INDEX FROM itaccessories;
+
+
+**error  //data must unique before you take unique key  //empty duplicate par sir
+ALTER TABLE itaccessories ADD UNIQUE(madeby);
+
+
+=>Method 2
+ALTER TABLE itaccessories 
+ADD CONSTRAINT uc_items_totalqty UNIQUE(items,totalqty);
+
+DESC itaccessories;
+SHOW INDEX FROM itaccessories;
+________________________________________________________________________
+
+=>DROP UNIQUE KEY
+
+ALTER TABLE itaccessories DROP INDEX items;
+
+DESC itaccessories;
+SHOW INDEX FROM itaccessories;
+
+ALTER TABLE itaccessories DROP INDEX uc_items_totalqty;
+
+DESC itaccessories;
+SHOW INDEX FROM itaccessories;
+
+________________________________________________________________________
+
+=>CREATE TABLE AS Statement (Clone|Copy);
+
+=Syntax :
+CREATE TABLE IF NOT EXISTS newtablename AS
+SELECT * FROM existingtablename;
+
+DESC students;
+SELECT * FROM students;
+
+INSERT INTO students( id,name,year,city)
+VALUES(11,'mya mya',19,'yangon'),
+(22,'ko ko',28,'mawlamyine');
+
+SELECT * FROM students;
+
+
+CREATE TABLE IF NOT EXISTS workers AS
+SELECT * FROM students;
+
+
+SELECT * FROM workers;    //***id toe Primary key toe pyan htat pay ya mal naw a chaw lay
+DESC workers;
+
+DROP TABLE IF EXISTS workers;
+
+SELECT  id,name,year,city FROM students 
+WHERE city = "yangon";
+
+CREATE TABLE IF NOT EXISTS workers AS
+SELECT  id,name,year,city FROM students 
+WHERE city = "yangon";
+
+DESC workers;
+SELECT * FROM workers; 
+________________________________________________________________________

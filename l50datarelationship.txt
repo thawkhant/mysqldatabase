@@ -1,0 +1,199 @@
+=>Different Types of DATA Relationships
+(i)One to One Relationship (1:1)
+(ii)One to Many Relationship (1:n)
+(iii)Many to Many Relationship (n:n)
+
+(i) One to One Relationship
+
+   Note : an employee has exactly one wifi password and ever wifi passcode belongs to exactly one employee
+   husband & wife
+   citizen & passport
+
+
+(ii) One to Many Relationship
+     one record in table A has one or many related records in table B
+     customers & orders
+     mother & children
+
+(iii) Many to Many Relationship (n:n)
+     One record in table A has one or may related tables in table B by using Dummy table.
+
+
+             *****8Database Project ko g draw net swall par sirrr  /// e draw nat lal ya dal
+
+
+
+ Exercise of dlt school(Project)
+
+ CREATE TABLE IF NOT EXISTS studentss(
+ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ regcode VARCHAR(10) NOT NULL UNIQUE,
+ firstname VARCHAR(20) NOT NULL,
+ lastname VARCHAR(20),
+ gender ENUM('1','2') NOT NULL,
+ dob DATE NOT NULL,
+ email VARCHAR(50) NOT NULL UNIQUE,
+ password VARCHAR(255) NOT NULL,
+ status ENUM('Enable','Disable','Terminate') DEFAULT 'Enable',
+ created_at TIMESTAMP DEFAULT NOW(),
+ updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+ );
+
+ DESC studentss;
+
+ INSERT INTO studentss(regcode,firstname,lastname,gender,dob,email,password)
+ VALUES('WDF1001','aung','aung',1,'2000-1-31','aungaung@gmail.com',MD5(SHA1(123456))),
+ ('WDF1002','su','su',2,'2000-1-28','susu@gmail.com',MD5(SHA1(123456)));
+
+ SELECT * FROM studentss;s
+
+ CREATE TABLE IF NOT EXISTS sudentssinfos(
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  coverphoto VARCHAR(255),
+  profilephoto VARCHAR(255),
+  nrcnumber VARCHAR(50) NOT NULL UNIQUE,
+  phone VARCHAR(15) NOT NULL UNIQUE,
+  address VARCHAR(255) NOT NULL,
+  student_id INT,
+  FOREIGN KEY(student_id) REFERENCES studentss(id) ON UPDATE CASCADE ON DELETE CASCADE
+
+ );
+
+ DESC studentssinfos;
+
+ INSERT INTO sudentssinfos(nrcnumber,phone,address,student_id)
+ VALUES('10/MaLaMa(N)1223456','09123456','No.19,myittar st, mawlamyint',1),
+ ('10/MaLaMa(N)1223457','09123457','No.26,myittarrr st, mawlamyint',2);
+
+ SELECT * FROM sudentssinfos;
+
+
+
+ CREATE TABLE IF NOT EXISTS teachers(
+ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ name VARCHAR(30) NOT NULL,
+ phone VARCHAR(15) NOT NULL UNIQUE,
+ email VARCHAR(50) NOT NULL UNIQUE
+ );
+
+ DESC teachers;
+
+ INSERT INTO teachers(name,phone,email)
+ VALUES('ko tha','09123456','kotha@gmail.com');
+
+ SELECT * FROM teachers;
+
+ CREATE TABLE IF NOT EXISTS subjects(
+ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ course VARCHAR(100) NOT NULL UNIQUE,
+ subjecttype SET('THEORY','PROJECT'),                                        SET ka na ku lone yway lot ya dal
+ fee DECIMAL(10,2) DEFAULT 0,
+ requirement VARCHAR(255)
+ );
+
+
+ DESC subjects;
+
+ INSERT INTO subjects(course,subjecttype,fee,requirement)
+ VALUES('web development foundation','theory',0,'computer basic'),
+ ('css animation','project',10000,'wdf'),
+ ('javascript l1','project',5000,'wdf,css animation'),
+ ('javascript oop','theory,project',25000,'wdf,css animation , l1,l2,l3'),
+ ('react js','theory,project',35000,'javascript oop');
+
+
+ SELECT * FROM subjects;
+
+ 
+ CREATE TABLE IF NOT EXISTS classes(
+   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   subject_id INT,
+   batch INT NOT NULL,
+   week SET('Sun','Mon','Tue','Wed','Thu','Fri','Sat') NOT NULL,
+   startdate DATE NOT NULL,
+   starttime TIME NOT NULL,
+   endtime TIME NOT NULL,
+   teacher_id INT,
+   FOREIGN KEY(subject_id) REFERENCES subjects(id),
+   FOREIGN KEY(teacher_id) REFERENCES teachers(id)
+ );
+
+
+ DESC classes;
+
+ INSERT INTO classes(subject_id,batch,week,startdate,starttime,endtime,teacher_id)
+ VALUES(4,1,'sat,sun','2022-04-01','09:00','12:00',1),
+ (5,1,'sat,sun,mon','2022-04-01','16:00','18:00',1);
+
+ SELECT * FROM classes;
+
+
+ CREATE TABLE IF NOT EXISTS enrollments(
+ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ paymentmethod ENUM('kpay','cbpay','kbz','cb','topup') NOT NULL,
+ class_id INT,
+ student_id INT,
+ status ENUM('Enable','Disable') DEFAULT 'Enable',
+ created_at TIMESTAMP DEFAULT NOW(),
+ updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ FOREIGN KEY(class_id) REFERENCES classes(id) ON UPDATE CASCADE,
+ FOREIGN KEY(student_id) REFERENCES studentss(id) ON UPDATE CASCADE
+ );
+
+ DESC enrollments;
+
+
+ INSERT INTO enrollments(paymentmethod,class_id,student_id)
+ VALUES(1,1,1),
+ (1,2,1),
+ (3,1,2);
+
+ SELECT * FROM enrollments;
+
+      CREATE TABLE IF NOT EXISTS reviews(
+         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+         rating INT NOT NULL CHECK (rating <= 5),
+         remark VARCHAR(255),
+         class_id INT,
+         student_id INT,
+         created_at TIMESTAMP DEFAULT NOW(),
+         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+         FOREIGN KEY(class_id) REFERENCES classes(id) ON UPDATE CASCADE ON DELETE CASCADE,
+         FOREIGN KEY(student_id) REFERENCES studentss(id) ON UPDATE CASCADE ON DELETE CASCADE
+         );
+
+         DESC reviews;
+
+  INSERT INTO reviews(rating,remark,class_id,student_id)
+  VALUES(3,'not bad',1,1),
+  (4,'satified',2,1),
+  (5,'FYI',1,2);
+
+  SELECT * FROM reviews;  
+
+
+  CREATE TABLE IF NOT EXISTS attendances(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    classdate DATE NOT NULL DEFAULT(CURRENT_DATE),
+    class_id INT,
+    student_id INT,
+    attcode VARCHAR(10) NOT NULL,
+    remark VARCHAR(255),
+    created_at TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY(class_id) REFERENCES classes(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY(student_id) REFERENCES studentss(id) ON UPDATE CASCADE ON DELETE CASCADE
+   );
+
+  DESC attendances;
+  
+  INSERT INTO attendances(class_id,student_id,attcode)
+  VALUES(1,1,'7OOP'),
+  (2,1,'7RC'),
+  (1,2,'7OOP');
+
+  SELECT * FROM attendances; 
+
+
+  __________________________________________________________________________________________________
+
+  

@@ -1,0 +1,49 @@
+==>REPLACE (Replace parts of strings)
+
+REPLACE Syntax
+
+SELECT REPLACE("Hello World","Hell",'Zer');
+________________________________________________________
+
+SELECT REPLACE("Tin Htut Aung","Aung",'Maung');
+
+(*No Action)
+SELECT REPLACE("Hello World","hell",'Zer');
+
+SELECT REPLACE("Hello World","0",'0');
+
+(*No Action)
+SELECT REPLACE("Hello World","0",'A');
+
+SELECT REPLACE("Hello World","l",'7');
+
+SELECT REPLACE)'cheese bread coffee milk','','and');
+
+SELECT REPLACE)'cheese bread coffee milk','',' and ');
+
+________________________________________________________
+
+==>REPLACE() with SUBSTRING()/SUBSTR() and CONCAT
+
+SELECT * FROM persons;
+
+SELECT * FROM city;
+
+SELECT REPLACE(city,'m','M')FROM persons;
+
+SELECT REPLACE(city,'m','M')AS hometown FROM persons;
+
+SELECT REPLACE(city,'m','M')AS 'current location' FROM persons;
+
+
+==>REPLACE() with SUBSTRING()/SUBSTR() and CONCAT
+
+SELECT * FROM persons;
+
+SELECT SUBSTRING(REPLACE (city,'m','M'),1,5)FROM persons;
+
+SELECT SUBSTRING(REPLACE(address,'n','N'),1,5)FROM persons;
+
+SELECT CONCAT(SUBSTRING(REPLACE(address,'n','N'),1,5),...)FROM persons;
+
+SELECT CONCAT(SUBSTRING(REPLACE(address,'n','N'),1,5),...)AS 'short address'FROM persons;

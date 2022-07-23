@@ -1,0 +1,304 @@
+=>Comments
+
+(i)Single Line Comment
+# comment here  (Space or Without Space is OK!!!!)
+-- comment here (Space needed)
+/* comment here */ (Space or Without Space is OK!!!!)
+
+
+(ii)Multi Line Comments
+/*
+    multi comment one
+    multi comment two
+ */
+
+ SELECT (1+1); #Comment here
+ SELECT (1+1); # Comment here
+ SELECT (1+1); -- Comment here
+ SELECT (1+1); --Comment here  (**error)
+ SELECT (1+1); -- /* Comment here */
+
+
+ __________________________________________________________________________________________
+
+ =>Create User
+
+ =Syntax :
+ CREATE USER username IDENTIFIED BY 'password';
+
+ CREATE USER 'thawkhant'@'localhost' IDENTIFIED BY '123456789';
+
+ /q
+ mysql -u thawkhant -p'123456789';
+ SELECT USER();
+ SHOW DATABASES;  #result = only one simple database
+ SELECT USER FROM mysql.user; #result = permission denied
+
+ =>Existing Users
+ SELECT USER FROM mysql.user;
+ SELECT USER FROM mysql.user WHERE USER LIKE 'k%';
+
+ \q
+ mysql -u kotha -p'datalandtechnology';
+
+
+ Note : ALL PRIVILEGES //( it gives all privileges to new user )
+        CREATE ( create database and create table ) 
+        DROP ( drop database and drop tables )
+
+
+        INSERT (specific table)
+        SELECT (specific table)
+        UPDATE (specific table)
+        DELETE (specific table)
+
+
+=Syntax : (database.tablename)
+GRANT ALL PRIVILEGES ON *.*  TO 'username'@'localhost';
+FLUSH PRIVILEGES;        //reload
+
+GRANT CREATE,SELECT,INSERT ON *.* TO 'username'@'localhost'; 
+FLUSH PRIVILEGES;      //reload
+
+
+*error = Access Denied  //root account can only do like it
+GRANT ALL PRIVILEGES ON *.* TO 'thawkhant'@'localhost';  
+
+SHOW GRANTS FOR 'thawkhant'@'localhost';   ///nothing will show cuzz root account was not pay permission
+SHOW GRANTS FOR 'kotha'@'localhost';   
+
+
+\q
+mysql -u root -p'sqlpassword20201A';  //rootaccount
+SELECT USER();
+
+GRANT ALL PRIVILEGES ON *.* TO 'thawkhant'@'localhost';
+FLUSH PRIVILEGES;
+
+SHOW GRANTS FOR 'thawkhant'@'localhost'; 
+
+/q
+ mysql -u thawkhant -p'123456789';
+ SELECT USER();
+ SHOW DATABASES;  #result = only one simple database
+ SELECT USER FROM mysql.user; #result = permission denied
+
+
+ ---------------------------------
+
+ mysql -u root -p'sqlpassword20201A';
+
+ CREATE USER 'thawkhant'@'localhost' IDENTIFIED BY '123456789';
+
+ SELECT USER FROM mysql.user WHERE USER LIKE 't%';
+
+ SHOW GRANTS FOR 'thawkhant'@'localhost';
+
+ GRANT CREATE,SELECT,INSERT ON *.* TO 'thawkhant'@'localhost';
+ FLUSH PRIVILEGES;
+
+ SHOW GRANTS FOR 'thawkhant'@'localhost';
+
+ SHOW DATABASES;
+
+ /q
+ mysql -u thawkhant -p'123456789';
+ SELECT USER();
+ SHOW DATABASES;  #result = only one simple database
+ SELECT USER FROM mysql.user; #result = permission denied
+
+ USE kotha007;
+ SHOW TABLES;
+
+ ***error = denied
+ DROP TABLE IF EXISTS workers;  
+
+ SELECT * FROM workers; 
+
+
+_________________________________________________________________________________________
+
+ =>DROP USER
+
+ Method 1
+ =Syntax : ( Single )
+ DROP USER 'username'@'localhost';
+
+ =Syntax : ( Multi )
+ DROP USER 'username1'@'localhost','username2'@'localhost';
+
+ Method 2
+ DELETE FROM mysql.user USER = 'thawkhant';
+
+ SELECT USER FROM mysql.user WHERE USER LIKE 't%';
+ DROP USER 'thawkhant'@'localhost';
+ SELECT USER FROM mysql.user WHERE USER LIKE 't%';
+
+ _____________________________________________________________________________________________
+
+ =>RENAME USER
+
+ =Syntax : ( Single )
+ RENAME USER oldname To newname;
+
+ =Syntax : ( Multi )
+ RENAME USER oldname1 TO newname1, oldname2 TO newname2;
+
+\q
+mysql -u root -p'sqlpassword20201A';
+
+SELECT USER FROM mysql.user WHERE USER LIKE 't%';
+
+RENAME USER 'thawkhant'@'localhost' TO 'thawkhant001'@'localhost';
+
+
+SELECT USER FROM mysql.user WHERE USER LIKE 't%';
+
+\q
+mysql -u thawkhant -p'123456789';   *error
+mysql -u thawkhant001 -p'123456789';
+
+SELECT USER FROM mysql.user WHERE USER LIKE 't%';
+
+
+ _____________________________________________________________________________________________
+
+ =>CHANGE USER PASSWORD
+
+ =Syntax : 
+ ALTER USER 'username'@'localhost' IDENTIFIED BY 'newpassword';
+
+ =By Root User  | Sub Account
+ \q
+ mysql -u kotha -p'datalandtechnology';
+
+ SELECT USER FROM mysql.user WHERE USER LIKE 't%';
+
+ ALTER USER 'thawkhant001'@'localhost' IDENTIFIED BY '11111';
+
+ \q
+ mysql -u thawkhnt001 -p'123456789';   *error 
+ mysql -u thawkhnt001 -p'11111';
+
+
+-------------------------------
+
+=By self
+
+ALTER USER 'thawkhant001'@'localhost' IDENTIFIED BY '22222';
+
+ \q
+  mysql -u thawkhnt001 -p'11111';  *error
+  mysql -u thawkhant001 -p'22222'; 
+
+
+_______________________________________________________________________________________
+
+=>Account Lock
+
+=Syntax : ( By new user )
+CREATE USER username IDENTIFIED BY 'password' ACCOUNT LOCK;
+
+
+=Syntax : ( To existing user )
+ALTER USER username IDENTIFIED BY 'password' ACCOUNT LOCK;
+
+SELECT USER FROM mysql.user WHERE USER LIKE 't%';
+
+=>By user new
+CREATE USER 'thawkhant002'@'localhost' IDENTIFIED BY '123456789' ACCOUNT LOCK;
+
+SELECT USER FROM mysql.user WHERE USER LIKE 't%';
+
+
+***error =  Account is locked.
+\q
+mysql -u thawkhant002 -p'123456789';
+
+
+mysql -u WDF6378 -p'datalandtechnology';
+
+SELECT USER FROM mysql.user WHERE USER LIKE 't%';
+SELECT USER FROM mysql.user;
+SELECT USER,ACCOUNT_LOCKED FROM mysql.user;       **Account lock or unlock sint dar par sir
+SELECT USER,ACCOUNT_LOCKED FROM mysql.user WHERE USER LIKE 't%';
+
+----------------------------------
+
+=To existing user
+
+SELECT USER,ACCOUNT_LOCKED FROM mysql.user WHERE USER LIKE 't%';
+
+ALTER USER 'thawkhant001'@'localhost' ACCOUNT LOCK;
+
+
+_______________________________________________________________________________________
+
+=>Account Unlock
+
+=Syntax ( Single )
+ALTER USER username ACCOUNT UNLOCK;
+
+=Syntax ( Multi )
+ALTER USER username1,usrename2,....ACCOUNT UNLOCK;
+
+ALTER USER 'thawkhant001'@'localhost' ACCOUNT UNLOCK;
+
+SELECT USER,ACCOUNT_LOCKED FROM mysql.user WHERE USER LIKE 't%';
+
+ALTER USER 'thawkhant002'@'localhost' ACCOUNT UNLOCK;
+
+SELECT USER,ACCOUNT_LOCKED FROM mysql.user WHERE USER LIKE 't%';
+
+
+________________________________________________________________________________________
+
+=REVOKE
+
+\q
+mysql -u root -p'sqlpassword20201A';
+
+SHOW GRANTS FOR 'thawkhant002'@'localhost';            ***bar permission tway pay htar lal paw
+
+GRANT CREATE,SELECT,INSERT ON *.* TO 'thawkhant002'@'localhost';
+FLUSH PRIVILEGES;
+
+SHOW GRANTS FOR 'thawkhant002'@'localhost'; 
+
+\q
+mysql -u thawkhant002 -p'123456789';
+
+SHOW DATABASES;
+
+\q
+mysql -u root -p'sqlpassword20201A';
+
+REVOKE ALL PRIVILEGES ON *.* FROM 'thawkhant002'@'localhost';
+
+SHOW GRANTS FOR 'thawkhant002'@'localhost'; 
+
+_________________________________________________________________________________________
+
+=>GRANT Vs REVOKE
+
+\q
+mysql -u WDF6378 -p'datalandtechnology';
+SHOW GRANTS FOR 'thawkhant001'@'localhost'; 
+
+REVOKE ALL PRIVILEGES ON *.* FROM 'thawkhant001'@'localhost';
+SHOW GRANTS FOR 'thawkhant001'@'localhost'; 
+
+SHOW DATABASES;     **nothing will available at thawkahnt001 account cuzz revoke all
+
+\q
+mysql -u root -p'sqlpassword20201A';
+
+GRANT ALL PRIVILEGES ON wdf6378.employees TO 'thawkhant001'@'localhost';
+FLUSH PRIVILEGES;
+SHOW GRANTS FOR 'thawkhant001'@'localhost'; 
+
+\q
+mysql -u thawkhant001 -p'123456789';
+SHOW DATABASES;     ***will only show wdf6378 and then will only show employees sir.....
+
+__________________________________________________________________________________________

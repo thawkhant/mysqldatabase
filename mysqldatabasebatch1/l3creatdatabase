@@ -1,0 +1,27 @@
+===>CHECK DATSBASE;
+SHOW DATABASES;
+
+
+
+===>CREATE DATABASE
+CREATE DATABASE wdf6378;(should not be a numerical )
+
+
+
+======>DELETE DATABASE
+DROP DATABASE wdf6378;
+
+===>CHOOSE DATABASE
+USE wdf63778;
+
+
+===>CHECK DATABASE
+SELECT database();
+
+____________________________________________________________
+
+==>Database Name
+CAN CREAT
+CREATE DATABASE databasename(not numerical,underscore bar nyar thone lo ya dal exp..book-shop)
+
+

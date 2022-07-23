@@ -1,0 +1,290 @@
+=>CASE Statement
+
+=Syntax
+SELECT col1,col2,col3,...,
+   CASE
+       WHEN cond THEN ""
+       WHEN cond THEN ""
+       WHEN cond THEN ""
+       ELSE "" 
+   END AS...
+FROM tablename;   
+
+SELECT * FROM employees;
+
+SELECT name,age,salary,city,
+      CASE
+          WHEN age < 18 THEN "young"
+          ELSE "elder"
+      END AS "AGE cal"
+FROM employees; 
+
+SELECT name,age,salary,city,
+      CASE 
+          WHEN age < 18 THEN "young"
+          WHEN age < 30 THEN "elder"
+          ELSE "Retired"
+      END AS "Age Verify"
+FROM employees;      
+
+
+SELECT name,age,salary,city,
+      CASE 
+          WHEN age < 18 THEN "young"
+          WHEN age >= 35 THEN "manager"
+          ELSE "elder"
+      END AS "Age Verify"
+FROM employees;  
+
+
+
+SELECT name,age,salary,city,
+      CASE 
+          WHEN age < 18 THEN "young"
+          WHEN age >=18 AND age <=34 THEN "elder"
+          ELSE "manger"
+      END AS "Age Verify"
+FROM employees;      
+
+______________________________________________
+
+=Exercise
+
+CREATE TABLE IF NOT EXISTS handsets(
+id INT NOT NULL AUTO_INCREMENT,
+name VARCHAR(100),
+sellprice DECIMAL(10,2),
+stock INT,
+PRIMARY KEY(id)
+);
+
+DESC handsets;
+ 
+INSERT INTO handsets(name,sellprice,stock)
+    -> VALUES("samsung note 10",1500000,35),
+    -> ("samsung not s9",900000,35),
+    -> ("samsung a4",500000,10),
+    -> ("vivo 12",500000,40),
+    -> ("vivo v6",800000,20),
+    -> ("oppo f10",800000,18),
+    -> ("oppo d12",1200000,30),
+    -> ("sony e9",500000,50),
+    -> ("nokia n20",900000,25),
+    -> ("nokia l5",300000,8),
+    -> ("mi note10",900000,25);
+
+SELECT * FROM handsets;
+
+SELECT name,sellprice,stock,
+  CASE
+     WHEN stock BETWEEN 1 AND 10 THEN 'max order 10'
+     WHEN stock BETWEEN 11 AND 20 THEN 'max order 20'
+     WHEN stock BETWEEN 21 AND 30 THEN 'max order 30'
+     WHEN stock BETWEEN 31 AND 40 THEN 'max order 40'
+     WHEN stock BETWEEN 41 AND 50 THEN 'up to 50 available'
+     ELSE 'out of stock'
+  END AS 'stock control'
+     FROM handsets;
+
+
+    SELECT name,sellprice,stock,
+ CASE
+     WHEN stock BETWEEN 1 AND 10 THEN '*'
+     WHEN stock BETWEEN 11 AND 20 THEN '**'
+     WHEN stock BETWEEN 21 AND 30 THEN '***'
+     WHEN stock BETWEEN 31 AND 40 THEN '****'
+     WHEN stock BETWEEN 41 AND 50 THEN '*****'
+     ELSE 'zero stock'
+ END AS 'stock control'
+     FROM handsets;
+
+
+
+
+__________________________________________________________________________________________________________
+
+    This paragraph is from L8
+
+=> IF () Function
+
+=Syntax
+IF(condition,true,false,);
+
+ SELECT IF(100>20,'true','false');
+ SELECT IF(100<20,'true','false');
+
+ SELECT name,age,salary, IF(age>= 35,'elder','young')AS 'age control' FROM
+ employees;
+
+__________________________________________________________________________________________________________-
+
+     This paragraph is from L8
+
+=>TRUNCATE() Function
+=Syntax
+TRUNCATE(name,decimals);
+
+result = 123.342
+SELECT TRUNCATE(123.342,3);
+SELECT TRUNCATE(123.342,5);
+
+
+result =  123.346 
+SELECT TRUNCATE(123.346,5);
+
+
+result =  123.34 
+SELECT TRUNCATE(123.346,2);
+
+
+result = 123.3
+SELECT TRUNCATE(123.346,1);
+
+ SELECT name,price,
+     TRUNCATE(price,1)
+     FROM items;
+
+ SELECT name,price,
+  TRUNCATE(price,0)AS integers 
+  FROM items;
+
+__________________________________________________________________________________________________________
+
+    This paragraph is from L8
+
+=>FLOOR() Function
+FLOOR(number); 
+
+SELECT FLOOR(123.342);
+result 123  
+
+SELECT FLOOR(123.678);
+result 123  
+
+SELECT FLOOR(123);
+result 123 
+
+SELECT name,price,
+    -> FLOOR(price)
+    -> FROM items;
+
+
+____________________________________________________________________________________________________
+
+    This paragraph is from L8
+
+
+
+=>ROUND() Function
+=Syntax
+ROUND(name,decimals);
+
+result = 123.342
+SELECT ROUND(123.342,3);
+SELECT ROUND(123.342,5);
+
+
+result =  123.346 
+SELECT ROUND(123.346,5);
+
+
+result =  123.6
+SELECT ROUND(123.567,1);
+
+
+result = 124
+SELECT ROUND(123.567,0);
+
+ SELECT name,price,
+    -> ROUND(price,1)
+    -> FROM items;
+
+ SELECT name,price,
+  ROUND(price,0)AS integers 
+  FROM items;
+
+SELECT name,price,
+    -> ROUND(price,1)
+    -> FROM items;
+
+
+____________________________________________________________________________________________________
+
+    This paragraph is from L8
+
+=>CEIL() / CEILING() Function
+CEIL(number);
+CEILING(number);
+
+
+SELECT CEIL(123.342);
+result 123  
+
+SELECT CEILING(123.678);
+result 123  
+
+SELECT CEIL(123);
+result 123 
+
+SELECT name,price,
+    -> CEIL(price)
+    -> FROM items;
+
+____________________________________________________________________________________________________
+
+    This paragraph is from L8
+
+=>ABS() Function
+ABS(number);   
+
+
+*result = 123.342 
+SELECT ABS(-123.342);
+
+*result = 123.342 
+SELECT ABS(-123.678);
+
+____________________________________________________________________________________________________
+
+    This paragraph is from L8
+
+=>SQRT() Function
+SQRT(number);    
+
+SELECT SQRT(81);
+Result 9
+
+SELECT SQRT(41);
+Result 7
+
+____________________________________________________________________________________________________
+
+    This paragraph is from L8
+
+=>POW() Function
+POW(base,power);
+
+SELECT POW(10,2);
+result = 100
+SELECT POW(6,2);
+result = 36
+SELECT POW(4,3);
+result = 216
+
+____________________________________________________________________________________________________
+
+    This paragraph is from L8
+
+=>SIGN() Function
+SIGN(number)
+
+number > 0 return = 1
+number < 0 return = -1
+number = 0 return = 0  
+
+SELECT SIGN(500);
+result = 1
+SELECT SIGN(-500);
+result = -1
+SELECT SIGN(0);
+result = 0

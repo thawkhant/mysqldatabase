@@ -1,0 +1,280 @@
+=>Stored Routines
+(i) PROCEDURE  (store procedure) 
+ (a) IN = Input Parameter
+ (b) OUT = Output Parameter
+ (c)INOUT = Inout Parameter
+(ii) FUNCTION
+            (a)Default Functions (Build in)   ***Function ta ku ka return ta ku bal pyan naing dal naw
+            (b)User Define Functions
+                  (i) IN = Input Parameters      
+______________________________________________________________________
+
+
+=>PROCEDURE
+
+CREATE TABLE IF NOT EXISTS capitals(
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  date DATE NOT NULL,
+  name VARCHAR(50) NOT NULL,
+  amount DECIMAL(10,2) NOT NULL,
+  currency ENUM('MMK','USD') NOT NULL,
+  accounts ENUM('credit','debit') NOT NULL
+);
+
+DESC capitals;
+
+INSERT INTO capitals(date,name,amount,currency,accounts)
+VALUES('2022/1/20','mr.tin',500000,1,1),
+('2022/1/31','ms.july',300000,1,1),
+('2022/2/1','ms.july',200000,1,1),
+('2022/2/1','mr.tin',1000,2,1),
+('2022/2/2','ms.july',3000,2,1),
+('2022/2/2','mr.tin',1000,2,1),
+('2022/2/3','mr.tin',1000,2,1),
+('2022/2/14','mr.tin',200000,1,2);
+
+SELECT * FROM capitals;
+
+=Capital By MMK
+SELECT name,SUM(amount),currency,accounts
+FROM capitals
+WHERE accounts = 'credit' AND currency = 'MMK'
+GROUP BY name;
+
+CREATE VIEW vw_capitalbymmk AS
+SELECT name,SUM(amount),currency,accounts
+FROM capitals
+WHERE accounts = 'credit ' AND currency = ' MMK '
+GROUP BY name;
+
+
+=Capital By USD
+SELECT name,SUM(amount),currency,accounts
+FROM capitals
+WHERE accounts = 'credit' AND currency = 'USD'
+GROUP BY nmae;
+
+CREATE OR REPLACE VIEW vw_capitalbyusd AS
+SELECT name,SUM(amount),currency,accounts
+FROM capitals
+WHERE accounts = 'credit' AND currency = 'USD'
+GROUP BY name;
+
+
+SHOW FULL TABLES;
+
+SHOW FULL TABLES WHERE TABL_TYPE LIKE 'VIEW';
+
+SELECT * FROM vw_capitalsbymmk;
+
+SELECT * FROM vw_capitalsbyusd;
+
+
+____________________________________________________________________________
+
+=>PROCEDURE
+
+SELECT * FROM capitals;
+
+=Capital by Accounts
+
+SELECT date,name,amount,currency,accounts
+FROM capitals
+WHERE accounts = 'credit'
+ORDER BY date DESC;
+
+
+
+SELECT date,name,amount,currency,accounts
+FROM capitals
+WHERE accounts = 'debit';
+ORDER BY date DESC;
+
+
+DELIMITER //
+ 
+     CREATE PROCEDURE capitalbyaccountsreport_proc(p_acc VARCHAR(10))
+     BEGIN
+         
+        SELECT date,name,amount,currency,accounts
+        FROM capitals
+        WHERE accounts = p_acc
+        ORDER BY date DESC ;
+     END; //
+
+DELIMITER ;
+
+SHOW PROCEDURE STATUS WHERE DB = 'wdf6378';
+
+
+CALL capitalbyaccountsreport_proc('credit');
+CALL capitalbyaccountsreport_proc('debit');
+
+
+=>DROPT Procedure
+DROP PROCEDURE IF EXISTS capitalbyaccountsreport_proc;
+
+SHOW PROCEDURE STATUS WHERE DB = 'wdf6378';
+
+__________________________________________________________________________________
+
+=> IN
+
+SELECT date,name,amount,currency,accounts
+FROM capitals
+WHERE date = '2022-2-1';
+
+
+ DELIMITER $$
+
+             CREATE PROCEDURE capitalbydatereport_proc(IN p_date DATE)
+             BEGIN
+                   SELECT date,name,amount,currency,accounts
+                   FROM capitals
+                   WHERE date = P_date;
+
+             END ; $$
+
+ DELIMITER ;
+
+
+ SHOW PROCEDURE STATUS WHERE DB = 'wdf6378';
+
+ CALL capitalbydatereport_proc('2022-2-1');
+ CALL capitalbydatereport_proc('2022-2-14');
+
+
+ _______________________________________________________________________
+
+ =>Input and Output Parmaeters
+
+ SELECT * FROM employees;
+
+ =Total staff
+
+ SELECT COUNT(*) FROM employees
+ WHERE city = 'bago';
+ 
+ DELIMITER //
+ 
+     CREATE PROCEDURE totalstaffreport_proc(
+       IN p_city VARCHAR(50),
+       OUT p_totalemp INT
+     )
+     BEGIN
+           SELECT COUNT(*)
+           INTO p_totalemp FROM employees
+           WHERE city = p_city;
+     END; //
+
+ DELIMITER ;
+
+ SET @city:= "bago";             
+ SET @totalemp = 0;
+ SELECT @city,@totalemp;
+
+ CALL totalstaffreport_proc(@city,@totalemp);
+ SELECT @city,@totalemp;
+
+ 
+ CALL totalstaffreport_proc(@city,@totalemp);
+ SELECT @city,@totalemp;
+
+
+
+ SET @city:= "yangon";             
+ SET @totalygemp = 0;
+ SELECT @city,@totalemp;
+ 
+ CALL totalstaffreport_proc(@city, @totalygemp);
+ SELECT @city,@totalygemp;
+
+ SET @city:= "bago";             
+ SET @totalbgoemp = 0;
+ SELECT @city,@totalemp;
+
+
+ CALL totalstaffreport_proc(@city, @totalbgoemp);
+ SELECT @city,@totalbgoemp;
+
+ SELECT @totalygemp,@totalbgoemp;
+
+ SELECT (@totalygemp - @totalbgoemp) AS diffemp;
+
+ DROP PROCEDURE IF EXISTS totalstaffreport_proc;
+
+ _________
+=Min Max Salary
+
+ SELECT MIN(salary),MAX(salary),city FROM employees
+ WHERE city = 'yangon';
+
+
+  DELIMITER $$
+
+    CREATE PROCEDURE minmaxsalaryreport_proc(
+    IN p_city VARCHAR(50),
+    OUT p_minsalary INT,
+    OUT p_maxsalary INT)
+
+    BEGIN
+     
+    SELECT MAIN(salary), MAX(salary)
+    INTO p_minsalary,p_maxsalary
+    FROM employees
+    WHERE city = p_city;
+
+    END ; $$
+
+  DELIMITER ;
+
+
+  SET @min = 0,
+      @max = 0;
+SELECT @min,@max;
+
+CALL minmaxsalaryreport_proc('bago',@min,@max);
+
+  SELECT @min,@max;
+  SELECT (@max - @min) AS different;
+
+
+ ___________________________________________________________________
+
+ => INout , Input and Output Parameters
+ = Min Max Age
+
+ SELECT MIN(age),MAX(age)
+ FROM employees
+ WHERE city = "yangon";
+
+
+ DELIMITER //
+
+     CREATE PROCEDURE minmaxagereport_proc(
+        INOUT p_city VARCHAR(50),
+        OUT p_minage INT,
+        OUT p_maxage INT
+     )
+     BEGIN
+
+    
+    SELECT MIN(age),MAX(age)
+    INTO p_minage,p_maxage
+     FROM employees
+      WHERE city = p_city;
+
+     END; //
+
+ DELIMITER ;
+
+ SET @city = 'yangon';
+ SET @youngest := 0;
+ set @elderly :=0;
+ SELECT @youngest,@elderly;
+
+ CALL minmaxagereport_proc(@city,@youngest,@elderly);
+ SELECT @city,@youngest,@elderly;
+
+
+ __________________________________________________________________________________________

@@ -1,0 +1,52 @@
+SERVER LOGIN
+
+CMD
+
+USNAME= ssh wdf6366@dltmyanmar.com
+
+USER NAME = ssh dlt@dltmyanmar.com
+password  = datalandtechnology
+
+putty
+
+host name =dltmyanmar.com
+or 157.230.240.154(server no)
+
+login user name = wdf6366
+password = datalandtechnology
+
+winsp
+host name =dltmyanmar.com
+or 157.230.240.154
+
+username = dlt
+password = datalandtechnology
+
+==>DATABASE LOGIN
+(method1)
+mysql -uWDF6366 -p (-u ka username)(-p ka password)
+pw datalandtechnology
+
+
+(method2)
+mysql -u WDF6378 -p
+
+exit 
+
+==>Version Check
+(method 1= in server)
+mysql -V
+
+(method 2=im mysql)
+help;(shortcut=/h)
+status;(shortcut=(s)
+______________________________________________
+
+===>Artithmetic Operators (Stypes)
+
+Operator        Meaning                               Operation on
++(add)          Addition                              Numerical Value
+-(subtract)     Subtraction                           Numerical Value
+*(multiplay)    Muliplication                         Numerical Value
+/(divided)      Division                              Numerical Value
+%(Modulus)     Returns remainder of a division        Numerical Value

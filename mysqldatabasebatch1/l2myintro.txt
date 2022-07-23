@@ -1,0 +1,57 @@
+mysql -uWDF6366 -p (-u ka username)(-p ka password)
+pw datalandtechnology
+
+
+(method2)
+mysql -u WDF6378 -p
+
+exit 
+_______________________________________________________________________
+===>Artithmetic Operators (Stypes)
+
+Operator        Meaning                               Operation on
++(add)          Addition                              Numerical Value
+-(subtract)     Subtraction                           Numerical Value
+*(multiplay)    Muliplication                         Numerical Value
+/(divided)      Division                              Numerical Value
+%(Modulus)     Returns remainder of a division        Numerical Value
+
+===>Addition Operator=Syntax
+SELECT 10 + 2;
+SELECT '10'+2;
+SELECT '10'+'2';
+SELECT 10+2,20+30;
+SELECT '100'+'200' +'300'+'400'
+
+Subtraction Operator= Syntax
+SELECT 10-2;
+SELECT '1000'-'500','500'-'200';
+
+Multiplication Operator= Syntax
+SELECT 10*2;
+SELECT 15*5;
+SELECT 20*'3','100'*5;
+
+Dovesion Operator and DIV =Syntax
+
+SELECT 10/2;
+SELECT 2/3,3/5;
+SELECT 100/'25','2000'/2,12/0;
+
+SELECT 20/3;
+SELECT 20 DIV 3;
+SELECT 5 DIV 2,-40 DIV 3, -100 DVI -7;
+SELECT 5 DIV 2,20/5;
+SELECT 5 DIV 2,-20/5;
+
+Modulus Operator = Syntax
+ 
+ SELECT 10 % 3;
+ SELECT 2%3,3 % 5;
+ SELECT 20 % '3', '100' % 5;
+
+ SELECT 10 MOD 3;
+ SELECT '2345'%23;
+ SELECT '2345' MOD 23;
+ SELECT 70%5 , 10 % 3;
+ SELECT 70 MOD 5,MOD(10,3);

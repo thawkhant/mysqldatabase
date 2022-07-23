@@ -1,0 +1,246 @@
+=>Encrypt
+
+=>SHA1();
+SHA1(string);
+
+SELECT SHA1('save myanmar');
+*result = 11d4b9a2302990146720227030abc5177ae61baf
+
+SELECT SHA1(null);
+*result = null
+
+=>MD5();
+MD5(string);
+
+SELECT MD5('save myanmar');
+*result = c79e0872a8493cd0211b8064be72033c 
+`
+SELECT MD5(null);
+*result = null
+
+_______________________________________________________________________
+
+= Exercise
+
+ CREATE TABLE accounts(
+     id INT NOT NULL AUTO_INCREMENT,
+     name VARCHAR(100),
+     email VARCHAR(50),
+     password VARCHAR(100),
+     PRIMARY KEY(id)
+     );
+
+DESC accounts;
+
+
+     INSERT INTO accounts(name,email,password)
+    -> VALUES("aung aung","aungaung@gmail.com",12345),
+    -> ("maung maung","maungmaung@gmail.com","abcdefg"),
+    -> ("kyaw kyaw","kyawkyaw@gmail.com","abc123");
+
+
+SELECT name,email,
+IF(password = 12345,"Correct Password","Incorrect Password")AS "vertify"
+FROM accounts;
+
+
+SELECT name,email,password,
+    CASE
+        WHEN password = 12345 THEN 'Correct Password by 12345'
+        WHEN password = 'abcdefg' THEN 'Correct Password by abcdefg'
+        WHEN password = 'abc123' THEN 'Correct Password by abc123'
+        ELSE 'Incorrect Password'
+END AS 'Vertify Password'
+FROM accounts;
+
+
+INSERT INTO accounts(name,email,password)
+    VALUES("aung aung","aungaung@gmail.com",SHA1(12345)),
+          ("maung maung","maungmaung@gmail.com",SHA1("abcdefg")),
+          ("kyaw kyaw","kyawkyaw@gmail.com",SHA1("abc123"));
+
+SELECT * FROM accounts;     
+
+
+SELECT name,email,password,
+    CASE
+        WHEN password = SHA1(12345) THEN 'Correct Password by 12345'
+        WHEN password = SHA1('abcdefg') THEN 'Correct Password by abcdefg'
+        WHEN password = SHA1('abc123') THEN 'Correct Password by abc123'
+        ELSE 'Incorrect Password'
+END AS 'Vertify Password'
+FROM accounts;     
+
+---------------------
+
+HW MD5(SHA1()) 
+md5 -> sha1 -> result is available
+
+---------------------
+
+HW SHA1(MD5())   (*Not Available)
+md5 -> sha1 -> result
+
+
+___________________________________________________________________________________________
+
+         This paragraph is from l9
+
+
+=>GROUP BY Clause
+
+Note: same value into summary(eg...city,country,age) 
+       use with aggregate functions (COUNT(),MAX(),MIN(),SUM(),AVG())
+       GROUP BY is placed after the WHERE clause.
+       GROUP BY condition column name must have in expression.
+
+=Syntax
+
+SELECT col1,col2,agggregate(col3),....
+FROM tablename
+WHERE condition...
+GROUP BY col1,col2,....col_n; 
+
+____________________________________
+
+=> GROUP  BY  vs.  DISTINCT
+SELECT city FROM persons GROUP BY city;
+SELECT DISTINCT city FROM persons;
+
+SELECT DISTINCT address FROM persons;
+SELECT address FROM persons GROUP BY address;
+
+____________________________
+
+=>GROUP BY with COUNT()
+
+SELECT COUNT(*),address FROM persons GROUP BY address;
+SELECT COUNT(*),city FROM persons GROUP BY city;
+
+SELECT COUNT(*),firstname FROM persons GROUP BY firstname;
+SELECT COUNT(*),lastname FROM persons GROUP BY lastname;
+
+SELECT COUNT(*),city
+FROM persons
+GROUP BY city;
+
+SELECT COUNT(*),city
+FROM persons
+GROUP BY city
+GROUP BY city DESC;
+
+SELECT address,city
+    -> FROM persons
+    -> GROUP BY address,city;
+
+SELECT COUNT(*), address,city 
+FROM persons GROUP BY address,city;
+
+
+mg mg            no.12   yangon
+hla hla          no.13   mandalay
+nu nu            no.13   mandalay
+kyaw kyaw        no.14   yangon
+
+yangon
+mandalay
+
+2 yangon
+2 mandalay
+
+no.12
+no.13
+no.14
+
+no.12 yangon
+no.13 mandalay
+no.14 yangon
+
+1 no.12 yangon
+2 no.13 mandalay
+3 no.14 yangoon
+
+_________________________________________________________
+=>GROUP BY clause with SUM()/ MIN()/MAX()
+
+SELECT COUNT(*),salary FROM employees GROUP BY salary;
+
+SELECT city FROM employees
+GROUP BY city;
+
+SELECT city,SUM(salary) FROM employees
+GROUP BY city;
+
+SELECT city,MIN(salary)
+FROM employees GROUP BY city;
+
+
+SELECT city,MIN(salary),COUNT(*) FROM employees GROUP BY city;
+
+
+SELECT city,MAX(salary)
+FROM employees GROUP BY city;
+
+
+SELECT city,MAX(salary),COUNT(*) FROM employees GROUP BY city;
+
+
+________________________________________________________________________
+
+=>GROUP BY with CONCAT()
+
+SELECT CONCAT ('Employee in ',city) AS 'Show Location',MAX(salary)
+FROM employees
+GROUP BY city;
+
+________________________________________________________________________
+
+=> GROUP BY with AVG()
+
+SELECT city,AVG(salary) FROM employees GROUP BY city ;
+
+__________________________________________________________________________________________________________
+
+         This paragraph is from l9
+
+=>HAVING Clause
+
+=Synatx
+
+SELECT col1,col2,col3,...
+FROM tablename
+WHERE condition...
+GROUP BY col,col2,col3...,col_n
+HAVING condition;
+
+___________________________
+
+
+=Exercise 
+
+SELECT * FROM employees
+
+SELECT COUNT(*),city FROM employees
+    -> GROUP BY city ;
+
+ SELECT COUNT(*),city
+    -> FROM employees
+    -> WHERE city LIKE 'ma%'
+    -> GROUP BY city;
+
+
+ SELECT COUNT(*),city 
+ FROM employees 
+ GROUP BY city
+ HAVING city LIKE 'ma%';
+
+ SELECT city,SUM(salary) AS 'Total Salary'
+    -> FROM employees
+    -> GROUP BY city;
+
+ SELECT city,SUM(salary) AS 'Total Salary' 
+ FROM employees GROUP BY city 
+ HAVING SUM(salary) > 2000000;
+
+ ________________________________________________________________________________________________________
+        

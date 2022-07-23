@@ -1,0 +1,207 @@
+Fixed-Point
+
+fixed-point data type reprecent exact values
+DECIMAL(5,3) = 20.234
+20.5 = 20.500
+20.52356789 = 20.524(warning)
+ 
+               number     precision    scale
+               50.234      5             3
+               42.786      5             3  
+
+
+DECIMAL(5) = 12345
+DECIMAL(5,0) =12345
+
+CREATE TABLE teas(
+name VARCHAR(20),
+ordinaryprice DECIMAL(5),
+specialprice DECIMAL(5,0)
+);
+
+DESC teas;
+
+*result = 56789 12345
+INSERT INTO teas(name,oridnaryprice,specialprice)
+VALUES('milk tea',56789,12345);
+
+*result = 56789 12345
+INSERT INTO teas(name,oridnaryprice,specialprice)
+VALUES('thai tea',56789.00,12345.00);
+
+*result = 56789 12345(with 2 warnings)
+INSERT INTO teas(name,oridnaryprice,specialprice)
+VALUES('indonesia tea',56789.34,12345.56);
+
+(*error)
+INSERT INTO teas(name,oridnaryprice,specialprice)
+VALUES('myanmar tea',567899,123456;
+___________________________________________________________
+
+=>Floating Point
+
+=>FLOAT() Vs. DOUBLE(,)
+Note: FLOAT and DOUBLE data types are floating-point types and reprecent by approximate.
+Note: Balance between range and precision.
+
+FLOATE(5,3) = 20.234
+20.5 = 20.500
+20.52356789  20.524(no warning because 10.542 is an approximate value)
+
+=>FLOAT
+CREATE TABLE shoppings(
+name VARCHAR(20),
+purchaseprice FLOAT,
+sellprice FLOAT(4)
+);
+
+DESC shopping;
+
+INSERT INTO shoppings(name.purchaseprice,sellprice)
+VALUES('water',100,100),
+('coffee',500,500.34),
+('cake',800,800.56),
+('snack',250,250.889),
+('jam',9000,10000);
+
+SELECT * FROM shoppings;
+
+*result = 112233  112233
+INSERT INTO shoppings(name,purchaseprice,sellprice)
+VALUES('brand birdnest',112233.45,112233.45);
+
+
+*result = 11223300  11223300
+INSERT INTO shoppings(name,purchaseprice,sellprice)
+VALUES('royal birdnest',11223344.45,11223344.45);
+
+
+*result = 11223300  11223300
+INSERT INTO shoppings(name,purchaseprice,sellprice)
+VALUES('ayo birdnest',1122334455.45,1122334455.45);
+
+
+=>FLOAT VS. DOUBLE
+CREATE TABLE buyings(
+name VARCHAR(20),
+purchaseprice FLOAT,
+sellprice DOUBLE
+);
+
+DESC buyings;
+
+INSERT INTO buyings(name.purchaseprice,sellprice)
+VALUES('water',100,100),
+('coffee',500.34,500.34),
+('cake',800.56,800.56),
+('snack',250.889,250.889),
+('jam',10000,10000);
+
+SELECT * FROM buyings;
+
+
+*result 112233 112233.45
+INSERT INTO buyings(name,purchaseprice,sellprice)
+VALUES('brand birdnest',112233.45,112233.45);
+
+
+*result 11223300 11223344.45
+INSERT INTO buyings(name,purchaseprice,sellprice)
+VALUES('royal birdnest',11223344.45,11223344.45);
+
+
+*result 1122330000 1122334455.45
+INSERT INTO buyings(name,purchaseprice,sellprice)
+VALUES('ayo birdnest',1122334455.45,1122334455.45);
+
+
+*result 112233000000 112233445566.45
+INSERT INTO buyings(name,purchaseprice,sellprice)
+VALUES('royal birdnest',112233445566.45,112233445566.45);
+
+*result 112233000000 112233445566.45
+INSERT INTO buyings(name,purchaseprice,sellprice)
+VALUES('royal birdnest',11223344556677.45,11223344556677.45);
+
+*result 1.12233e17  1.122334455667789e17 
+3e15 =3,000,000,000,000,000
+INSERT INTO buyings(name,purchaseprice,sellprice)
+VALUES('royal birdnest',1122334455667788.45,1122334455667788.45);
+
+*result 1.12233e17  1.122334455667789e17 
+INSERT INTO buyings(name,purchaseprice,sellprice)
+VALUES('royal birdnest',112233445566778899.45,112233445566778899.45);
+
+
+*e/E (EXPONENTIAL (exponent)) numeric symbol
+eg. 200000 can be write 2e5
+__________________________________________________________
+That title is under l27variable.txt
+
+===>WARNING
+
+*Show Warning Count;
+SHOW COUNT(*) WARNINGS;
+SELECT @@warning_count;
+
+*Show Warning;
+SHOW WARNINGS;
+SHOW WARNINGS LIMIT 3;
+SHOW WARINTGS\G
+SHOW WARINGS \G
+
+Note: \G modifier    (\G) Send command to mysql server, display result vertically.
+SELECT * FROM tablename\G;
+SELECT * FROM tablename \G;
+
+
+Notes; \W modifer (\W) Show warnings after every statement.)
+
+Notes; \w modifier  (\w) Don't show warnings after every statement.
+help;
+
+
+Eg. SELECT 1/0;
+
+==>ERROR
+*SHOW Errors Count
+SHOW COUNT(*) ERRORS;
+SELECT @@error_count;
+
+
+*Show Errors
+SHOW ERRORS;
+SHOW ERRORS \G
+
+Eg. DROP TABLE abc; SELECT myfun();
+
+
+
+==>Change Error Count Setting;
+SHOW VARIABLES LIKE 'max_error_count';
+SET max_error_count=1024;
+
+_______________________________________________________
+This part also variable part
+
+==>Important SELECT Queries
+
+=>Check User
+status;
+SELECT USER();
+SELECT USER()AS 'ko ko';
+
+__________________________________________________________
+This part also variable part
+
+=>Get Mysql timezone
+
+SHOW VARIABLES LIKE "%time_zone%"
+SELECT @@time_zone;
+SELECT @@global.time_zone,@@session.time_zone;
+
+Change Mysql timezone
+SET time_zone = "+07:00";
+SET GLOBAL time_zone = "+07:00";
+SET @@global.time_zone = "+07:00"
+ 

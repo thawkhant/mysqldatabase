@@ -1,0 +1,54 @@
+==>SELECT DATA BY USING WHERE CLAUSE
+NOTE: WHERE clause is not only used in SELECT record, it is also used in UPDATE , DELETE...
+
+Method 1 Syntax
+SELECT * FROM table name
+WHERE condition;
+
+Method 2 Syntax
+SELECT column1,column2,...
+FROM tablename
+WHERE condition;
+
+Operators in WHERE Clause (9 types)
+=  Equal
+>  Greater than
+<  Less than
+>= Greater than or Equal
+<= Less than or Equal
+<>  Greater than or less than, Note::Not equal, !=
+BETWEEN
+LIKE 
+IN
+
+
+SELECT personid,firstname,city
+FROM persons
+WHERE city="mandalay"
+
+SELECT personid,firstname,city
+FROM persons
+WHERE city LIKE "mandalay";
+
+
+SELECT personid,firstname,city
+FROM persons
+WHERE firstname="tin htut"
+
+SELECT personid,firstname,city
+FROM persons
+WHERE firstname="Tin Htut"
+
+SELECT personid,firstname,city
+FROM persons
+WHERE firstname="Tin htut"
+
+
+*error
+SELECT personid,firstname,city
+FROM persons
+WHERE firstname="Tin H" *error
+
+SELECT personid,firstname,city
+FROM persons
+WHERE firstname LIKE "tin htut"
